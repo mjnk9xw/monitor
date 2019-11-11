@@ -8,7 +8,7 @@ import (
 )
 
 // GetAllActionNames return all action
-func (md *MonitorModel) GetAllActionNames() ([]string, error) {
+func (md *MonitorService) GetAllActionNames() ([]string, error) {
 	res := []string{}
 	// var res []string;
 	fmt.Println("GetAllActionNames ")
@@ -24,7 +24,7 @@ func (md *MonitorModel) GetAllActionNames() ([]string, error) {
 }
 
 // GetAllRequestNames return all request
-func (md *MonitorModel) GetAllRequestNames() ([]string, error) {
+func (md *MonitorService) GetAllRequestNames() ([]string, error) {
 	res := []string{}
 	md.RequestDailyLog.Range(func(key, _ interface{}) bool {
 		sKey := key.(string)
@@ -38,7 +38,7 @@ func (md *MonitorModel) GetAllRequestNames() ([]string, error) {
 }
 
 // GetActionDataByHour return time action
-func (md *MonitorModel) GetActionDataByHour(out *responses.ActionsDataByHours) {
+func (md *MonitorService) GetActionDataByHour(out *responses.ActionsDataByHours) {
 
 	md.ActionDailyLog.Range(func(key, value interface{}) bool {
 		// add key - value to
@@ -51,7 +51,7 @@ func (md *MonitorModel) GetActionDataByHour(out *responses.ActionsDataByHours) {
 }
 
 // GetRequestDataByHour return time request
-func (md *MonitorModel) GetRequestDataByHour(out *responses.ActionsDataByHours) {
+func (md *MonitorService) GetRequestDataByHour(out *responses.ActionsDataByHours) {
 	md.RequestDailyLog.Range(func(key, value interface{}) bool {
 		// add key - value to
 		sKey := key.(string)
@@ -64,7 +64,7 @@ func (md *MonitorModel) GetRequestDataByHour(out *responses.ActionsDataByHours) 
 }
 
 // GetActionDataByMinute return time action
-func (md *MonitorModel) GetActionDataByMinute(out *responses.ActionsDataByMinutes) {
+func (md *MonitorService) GetActionDataByMinute(out *responses.ActionsDataByMinutes) {
 	md.ActionDailyLog.Range(func(key, value interface{}) bool {
 		// add key - value to
 		sKey := key.(string)
@@ -77,7 +77,7 @@ func (md *MonitorModel) GetActionDataByMinute(out *responses.ActionsDataByMinute
 }
 
 // GetRequestDataByMinute return time request
-func (md *MonitorModel) GetRequestDataByMinute(out *responses.ActionsDataByMinutes) {
+func (md *MonitorService) GetRequestDataByMinute(out *responses.ActionsDataByMinutes) {
 	md.RequestDailyLog.Range(func(key, value interface{}) bool {
 		// add key - value to
 		sKey := key.(string)
@@ -89,7 +89,7 @@ func (md *MonitorModel) GetRequestDataByMinute(out *responses.ActionsDataByMinut
 }
 
 // GetAllInfoForCharting get tất cả thông tin cơ bản cho vẽ biểu đồ
-func (md *MonitorModel) GetAllInfoForCharting() (resp *data.AllInfoForChartingData) {
+func (md *MonitorService) GetAllInfoForCharting() (resp *data.AllInfoForChartingData) {
 	fmt.Printf("[GetAllInfoForCharting] call \n")
 
 	resp = &data.AllInfoForChartingData{

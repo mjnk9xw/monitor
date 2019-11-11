@@ -11,19 +11,19 @@ import (
 )
 
 // GetActionStat get time action
-func (md *MonitorModel) GetActionStat(actionName string) *data.DayStat {
+func (md *MonitorService) GetActionStat(actionName string) *data.DayStat {
 	res, _ := md.ActionDailyLog.LoadOrStore(actionName, &data.DayStat{})
 	return res.(*data.DayStat)
 }
 
 // GetRequestStat get time request
-func (md *MonitorModel) GetRequestStat(requestName string) *data.DayStat {
+func (md *MonitorService) GetRequestStat(requestName string) *data.DayStat {
 	res, _ := md.RequestDailyLog.LoadOrStore(requestName, &data.DayStat{})
 	return res.(*data.DayStat)
 }
 
 // CheckReset check reset
-func (md *MonitorModel) CheckReset() {
+func (md *MonitorService) CheckReset() {
 	// currentHour := time.Now().Hour()
 	// if md.LastHour > currentHour {
 	md.LastHour = time.Now().Hour()
@@ -34,7 +34,7 @@ func (md *MonitorModel) CheckReset() {
 }
 
 // LogAction log action
-func (md *MonitorModel) LogAction(actionName string, runTime time.Duration) {
+func (md *MonitorService) LogAction(actionName string, runTime time.Duration) {
 	// fmt.Println("LogAction ", actionName, runTime)
 	currentTime := time.Now()
 	currentHour := currentTime.Hour()
@@ -63,7 +63,7 @@ func (md *MonitorModel) LogAction(actionName string, runTime time.Duration) {
 }
 
 // LogRequest log request
-func (md *MonitorModel) LogRequest(requestName string, runTime time.Duration) {
+func (md *MonitorService) LogRequest(requestName string, runTime time.Duration) {
 
 	// fmt.Println("LogRequest ", requestName, runTime)
 	currentTime := time.Now()
@@ -100,26 +100,26 @@ type MonitorCheckpoint struct {
 }
 
 // StartAction start action
-func (md *MonitorModel) StartAction(actionName string) MonitorCheckpoint {
+func (md *MonitorService) StartAction(actionName string) MonitorCheckpoint {
 	return MonitorCheckpoint{Name: actionName, StartTime: time.Now()}
 }
 
 // FinishAction finish action
-func (md *MonitorModel) FinishAction(cp MonitorCheckpoint) {
+func (md *MonitorService) FinishAction(cp MonitorCheckpoint) {
 	md.LogAction(cp.Name, time.Since(cp.StartTime))
 }
 
 // StartRequest start request
-func (md *MonitorModel) StartRequest(reqName string) MonitorCheckpoint {
+func (md *MonitorService) StartRequest(reqName string) MonitorCheckpoint {
 	return MonitorCheckpoint{Name: reqName, StartTime: time.Now()}
 }
 
 // FinishRequest finish request
-func (md *MonitorModel) FinishRequest(cp MonitorCheckpoint) {
+func (md *MonitorService) FinishRequest(cp MonitorCheckpoint) {
 	fmt.Println("Finish Request ", cp)
 	md.LogRequest(cp.Name, time.Since(cp.StartTime))
 }
-func (md *MonitorModel) MakeMonitor() {
+func (md *MonitorService) MakeMonitor() {
 	address := beego.AppConfig.String("monitor_option::etcd")
 	name := beego.AppConfig.String("monitor_option::name")
 	url := beego.AppConfig.String("monitor_option::url")

@@ -3,10 +3,24 @@ package models
 import (
 	"monitor/data"
 	"monitor/responses"
+	"sync"
 	"time"
 )
 
-type MonitorModelIf interface {
+var (
+	once          sync.Once
+	modelInstance MonitorServiceIf
+)
+
+// GetQB86APIModel return interface models
+func GetMonitorModel() MonitorServiceIf {
+	once.Do(func() {
+		onceInitMonitorModel()
+	})
+	return modelInstance
+}
+
+type MonitorServiceIf interface {
 	GetActionStat(actionName string) *data.DayStat
 	GetRequestStat(requestName string) *data.DayStat
 	CheckReset()
